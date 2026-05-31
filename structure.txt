@@ -1,0 +1,29 @@
+nvim/
+│
+├── init.lua
+│
+└── lua/
+    │
+    ├── config/
+    │   └── lazy.lua
+    │
+    ├── core/
+    │   ├── keymaps.lua
+    │   └── options.lua
+    │
+    ├── plugins/
+    │   ├── alpha.lua
+    │   ├── cmp.lua
+    │   ├── debugger.lua
+    │   ├── lsp.lua
+    │   ├── oil.lua
+    │   ├── telescope.lua
+    │   ├── theme.lua
+    │   ├── treesitter.lua
+    │   ├── ui.lua
+    │   └── yazi.lua
+    │
+    └── themes/
+        ├── custom.lua
+        ├── dosbox.lua
+        └── dosbox_black.lua
