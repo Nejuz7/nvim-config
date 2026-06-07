@@ -57,6 +57,9 @@ vim.opt.foldlevel = 99
 --------------------------------------------------
 
 vim.opt.shell = "pwsh"
+vim.opt.shellcmdflag = "-NoLogo -NoProfile -Command"
+vim.opt.shellquote = ""
+vim.opt.shellxquote = ""
 
 --------------------------------------------------
 -- REMOVE SPLIT BORDERS

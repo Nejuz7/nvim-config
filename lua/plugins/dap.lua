@@ -15,8 +15,8 @@ return {
       --------------------------------------------------
       -- REQUIRE
       --------------------------------------------------
-      local dap = require("dap")
-      local dapui = require("dapui")
+     local dap = require("dap")
+      --local dapui = require("dapui")
 
       --------------------------------------------------
       -- MASON
@@ -31,58 +31,7 @@ return {
         automatic_installation = true,
       })
 
-      --------------------------------------------------
-      -- UI
-      --------------------------------------------------
-      dapui.setup(
-    {
 
-layouts = {
-    {
-      elements = {
-        "breakpoints",
-        "stacks",
-      },
-      size = 30,
-      position = "left",
-    },
-
-    {
-      elements = {
-        "scopes",
-      },
-      size = 40,
-      position = "right",
-    },
-
-    {
-      elements = {
-        "repl",
-        "console",
-      },
-      size = 10,
-      position = "bottom",
-    },
-  },
-         }
-        )
-
-         require("nvim-dap-virtual-text").setup()
-
-      --------------------------------------------------
-      -- AUTO UI
-      --------------------------------------------------
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
 
       --------------------------------------------------
       -- CODELLDB
@@ -104,7 +53,7 @@ layouts = {
       }
 
       --------------------------------------------------
-      -- C / C++
+      -- C++/C
       --------------------------------------------------
       dap.configurations.cpp = {
         {
@@ -114,19 +63,16 @@ layouts = {
         request = "launch",
 
 
---[[
-        program = function()
-          return vim.fn.input(
-          "Path to executable: ",
-          vim.fn.getcwd() .. "/build/",
-          "file"
-          )
-        end,
 
-  ]]       
+        sourceLanguages = { "c", "cpp" },
+
+           -- initCommands = {
+            --    "settings set target.process.thread.step-avoid-regexp 'std::|ucrt|msvcrt|kernel32|ntdll'"
+            -- },
 
 
-        program = function()
+
+           program = function()
           return vim.fn.expand("%:p:r") .. ".exe"
         end,
 
@@ -142,76 +88,90 @@ layouts = {
 
           stopOnEntry = false,
           
-          runInTerminal = true,
+          runInTerminal = false,
 
           
 
         },
       }
 
-      dap.configurations.c = dap.configurations.cpp
 
-      --------------------------------------------------
+
+  dap.configurations.c = dap.configurations.cpp
+
+
+
+
+--------------------------------------------------
 -- BUILD
 --------------------------------------------------
-
 vim.keymap.set("n", "<F9>", function()
-
   vim.cmd("write")
 
-  local file =
-    vim.fn.expand("%:p")
+  local file = vim.fn.expand("%:p")
+  local ext = vim.fn.expand("%:e")
+  local exe = vim.fn.expand("%:p:r") .. ".exe"
 
-  local exe =
-    vim.fn.expand("%:p:r") .. ".exe"
+  local cmd
 
- 
-
-local cmd = {
-  "clang++",
-
-  "-g",
-  "-O0",
-
-  "-std=c++20",
-  "-Wall",
-  "-Wextra",
-
-  file,
-  "-o",
-  exe,
-}
+  if ext == "c" then
+    cmd = {
+      "clang",
+      "-g",
+      "-O0",
+      "-std=c99",
+      "-Wall",
+      "-Wextra",
+      file,
+      "-o",
+      exe,
+    }
+  else
+    cmd = {
+      "clang++",
+      "-g",
+      "-O0",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      file,
+      "-o",
+      exe,
+    }
+  end
 
   print("\nCompiling...\n")
 
-  local result =
-    vim.fn.system(cmd)
+  local result = vim.fn.system(cmd)
 
-    print(result)
+  print(result)
 
   if vim.v.shell_error ~= 0 then
-
     print("Build failed!")
     return
-
   end
 
   print("Build success!")
   print("Executable: " .. exe)
-
 end)
+
+
+
+
+
 
 
 --------------------------------------------------
 -- DISABLE SWAP FOR DAP BUFFERS
 --------------------------------------------------
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "dap-*",
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+    pattern = { "dap-*", "dap-src://*" },
 
-  callback = function()
-    vim.opt_local.swapfile = false
-  end,
+    callback = function()
+        vim.opt_local.swapfile = false
+        vim.opt_local.bufhidden = "wipe"
+    end,
 })
 
 
@@ -227,8 +187,20 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.keymap.set("n", "<F11>", dap.step_into)
       vim.keymap.set("n", "<F12>", dap.step_out)
       vim.keymap.set("n", "<leader>dr", dap.repl.open)
+      
+      
+      
+      
+    
 
-      vim.keymap.set("n", "<Leader>du", dapui.toggle)
+
+
+
+
+
+
+
+     
     end,
   },
 }
