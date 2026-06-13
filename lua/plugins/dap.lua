@@ -116,29 +116,36 @@ vim.keymap.set("n", "<F9>", function()
 
   if ext == "c" then
     cmd = {
-      "clang",
-      "-g",
-      "-O0",
-      "-std=c99",
-      "-Wall",
-      "-Wextra",
-      file,
-      "-o",
-      exe,
-    }
-  else
+    "C:/msys64/ucrt64/bin/clang.exe",
+    "-g",
+    "-O0",
+    "-std=c99",
+    "-Wall",
+    "-Wextra",
+
+    "-IC:/msys64/ucrt64/include",
+
+    file,
+
+    "-LC:/msys64/ucrt64/lib",
+    "-lSDL3",
+
+    "-o",
+    exe,
+}
+else
     cmd = {
-      "clang++",
-      "-g",
-      "-O0",
-      "-std=c++20",
-      "-Wall",
-      "-Wextra",
-      file,
-      "-o",
-      exe,
+        "C:/msys64/ucrt64/bin/clang++.exe",
+        "-g",
+        "-O0",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        file,
+        "-o",
+        exe,
     }
-  end
+end
 
   print("\nCompiling...\n")
 
@@ -181,12 +188,24 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
       --------------------------------------------------
       -- KEYMAPS
       --------------------------------------------------
-      vim.keymap.set("n", "<F5>", dap.continue)
+      vim.keymap.set("n", "<C-F5>", dap.continue)
       vim.keymap.set("n", "<F8>", dap.toggle_breakpoint)
       vim.keymap.set("n", "<F10>", dap.step_over)
       vim.keymap.set("n", "<F11>", dap.step_into)
       vim.keymap.set("n", "<F12>", dap.step_out)
       vim.keymap.set("n", "<leader>dr", dap.repl.open)
+
+
+      vim.keymap.set("n", "<F5>", function()
+    vim.cmd("write")
+
+    local exe = vim.fn.expand("%:p:r") .. ".exe"
+
+    vim.fn.jobstart(
+        { "cmd.exe", "/c", "start", "", exe },
+        { detach = true }
+    )
+end, { desc = "Run without debugging" })
       
       
       

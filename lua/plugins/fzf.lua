@@ -502,6 +502,78 @@ lsp = {
 
 
 
+        map("n", "<leader>fs",
+  function()
+    fzf.lsp_document_symbols()
+  end,
+  {
+    desc = "Document Symbols",
+  }
+)
+
+
+map("n", "<leader>fS",
+  function()
+    fzf.lsp_workspace_symbols()
+  end,
+  {
+    desc = "Workspace Symbols",
+  }
+)
+
+
+map("n", "<leader>fh",
+  "<cmd>ClangdSwitchSourceHeader<CR>",
+  {
+    desc = "Switch Header/Source",
+  }
+)
+
+
+-- Definition
+map("n", "gd",
+  function()
+    fzf.lsp_definitions()
+  end,
+  { desc = "Goto Definition" }
+)
+
+-- Declaration
+map("n", "gD",
+  function()
+    fzf.lsp_declarations()
+  end,
+  { desc = "Goto Declaration" }
+)
+
+-- References
+map("n", "gr",
+  function()
+    fzf.lsp_references()
+  end,
+  { desc = "References" }
+)
+
+-- Implementation
+map("n", "gi",
+  function()
+    fzf.lsp_implementations()
+  end,
+  { desc = "Implementation" }
+)
+
+-- Type Definition
+map("n", "gt",
+  function()
+    fzf.lsp_typedefs()
+  end,
+  { desc = "Type Definition" }
+)
+
+
+
+
+
 
 
 

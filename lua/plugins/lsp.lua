@@ -38,11 +38,11 @@ return {
 
       require("mason").setup()
 
+     
+
       require("mason-lspconfig").setup({
 
         ensure_installed = {
-
-          "clangd",
 
           "lua_ls",
 
@@ -182,61 +182,7 @@ vim.keymap.set(
   opts
 )
 
-            --------------------------------------------------
-            -- TELESCOPE LSP
-            --------------------------------------------------
 
-vim.keymap.set(
-  "n",
-  "gd",
-  function()
-    require("fzf-lua").lsp_definitions()
-  end,
-  opts
-)
-
-vim.keymap.set(
-  "n",
-  "gr",
-  function()
-    require("fzf-lua").lsp_references()
-  end,
-  opts
-)
-
-vim.keymap.set(
-  "n",
-  "gi",
-  function()
-    require("fzf-lua").lsp_implementations()
-  end,
-  opts
-)
-
-vim.keymap.set(
-  "n",
-  "<leader>fs",
-  function()
-
-    require("fzf-lua").lsp_document_symbols({
-
-      jump1 = true,
-      auto_close = true,
-
-    })
-
-  end,
-  opts
-)
-
-vim.keymap.set(
-  "n",
-  "<leader>fS",
-  function()
-    require("fzf-lua").lsp_workspace_symbols()
-  end,
-  opts
-)
           end,
         }
       )
@@ -251,22 +197,22 @@ vim.keymap.set(
 
         cmd = {
 
-          "clangd",
+            "C:/msys64/ucrt64/bin/clangd.exe",
 
-          "--background-index",
+            "--background-index",
 
-          "--clang-tidy",
+            "--clang-tidy",
 
-          "--completion-style=detailed",
+            "--completion-style=detailed",
 
-          "--header-insertion=iwyu",
+            "--header-insertion=iwyu",
 
-          "--offset-encoding=utf-16",
+            "--offset-encoding=utf-16",
 
-          "--pch-storage=memory",
+            "--pch-storage=memory",
 
-          "--all-scopes-completion",
-        },
+            "--all-scopes-completion",
+          },
 
         filetypes = {
 
